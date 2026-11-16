@@ -1,3 +1,4 @@
+import AVFoundation
 import Foundation
 import Photos
 import SwiftData
@@ -51,6 +52,22 @@ enum Brightness {
         guard let saved, let screen else { return }
         screen.brightness = saved
         self.saved = nil
+    }
+}
+
+/// Soft three-note chime when a timer session is done. Plays even in silent mode,
+/// because the phone is lying face-up on the desk with a black screen.
+@MainActor
+enum Chime {
+    private static var player: AVAudioPlayer?
+
+    static func play() {
+        guard let url = Bundle.main.url(forResource: "chime", withExtension: "wav") else { return }
+        try? AVAudioSession.sharedInstance().setCategory(.playback, options: [.mixWithOthers])
+        try? AVAudioSession.sharedInstance().setActive(true)
+        player = try? AVAudioPlayer(contentsOf: url)
+        player?.volume = 0.8
+        player?.play()
     }
 }
 

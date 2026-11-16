@@ -30,7 +30,7 @@ struct SessionSetupView: View {
             Color.black.ignoresSafeArea()
 
             if recordVideo && !cameraDenied {
-                CameraPreview(session: controller.recorder.session)
+                CameraPreview(session: controller.recorder.session, generation: controller.cameraGeneration)
                     .ignoresSafeArea()
                     .overlay(LinearGradient(colors: [.black.opacity(0.55), .clear, .clear, .black.opacity(0.85)],
                                             startPoint: .top, endPoint: .bottom).ignoresSafeArea())

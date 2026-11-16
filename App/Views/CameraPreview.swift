@@ -3,6 +3,7 @@ import SwiftUI
 
 struct CameraPreview: UIViewRepresentable {
     let session: AVCaptureSession
+    var generation = 0
 
     final class PreviewView: UIView {
         override class var layerClass: AnyClass { AVCaptureVideoPreviewLayer.self }
@@ -10,6 +11,10 @@ struct CameraPreview: UIViewRepresentable {
 
         override func layoutSubviews() {
             super.layoutSubviews()
+            fixRotation()
+        }
+
+        func fixRotation() {
             if let connection = previewLayer.connection, connection.isVideoRotationAngleSupported(90) {
                 connection.videoRotationAngle = 90
             }
@@ -25,7 +30,7 @@ struct CameraPreview: UIViewRepresentable {
     }
 
     func updateUIView(_ view: PreviewView, context: Context) {
-        view.setNeedsLayout()
+        view.fixRotation()
     }
 }
 

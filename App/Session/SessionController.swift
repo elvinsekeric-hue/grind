@@ -63,6 +63,8 @@ final class SessionController {
     private(set) var state: ActiveState?
     private(set) var now = Date()
     private(set) var frameCount = 0
+    /// Bumped after the camera was (re)configured, so the preview can fix its orientation.
+    private(set) var cameraGeneration = 0
     private(set) var result: SessionResult?
     var awayNotice: AwayNotice?
 
@@ -105,6 +107,7 @@ final class SessionController {
         await recorder.configure(position: position)
         recorder.setFrameRate(30)
         recorder.startRunning()
+        cameraGeneration += 1
     }
 
     func releaseCamera() {
@@ -228,8 +231,6 @@ final class SessionController {
         last.title = "Noch 30 Sekunden"
         last.body = "Zurück zu Grind, sonst ist die Session vorbei."
         last.sound = .default
-        first.interruptionLevel = .timeSensitive
-        last.interruptionLevel = .timeSensitive
         center.add(UNNotificationRequest(identifier: Self.awayIDs[0], content: first,
                                          trigger: UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)))
         center.add(UNNotificationRequest(identifier: Self.awayIDs[1], content: last,
@@ -314,7 +315,10 @@ final class SessionController {
         recorder.stopRunning()
         UIApplication.shared.isIdleTimerDisabled = false
         phase = .finishing(0)
-        if reason == .completed { Haptics.success() }
+        if reason == .completed {
+            Haptics.success()
+            Chime.play()
+        }
 
         let before = currentSummary()
 
