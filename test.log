@@ -1,0 +1,78 @@
+Building for debugging...
+[0/7] Write sources
+[0/7] /Users/runner/work/grind/grind/Packages/GrindCore/.build/arm64-apple-macosx/debug/GrindCorePackageTests.derived/runner.swift
+[2/7] Write sources
+[4/7] Write swift-version-7974D3F7F03D5E95.txt
+[6/12] Compiling GrindCore FrameSchedule.swift
+[7/12] Compiling GrindCore Streak.swift
+[8/12] Compiling GrindCore DayClock.swift
+[9/12] Compiling GrindCore DurationFormat.swift
+[10/12] Emitting module GrindCore
+[11/13] Compiling GrindCore WidgetSnapshot.swift
+[12/15] Emitting module GrindCoreTests
+[13/15] Compiling GrindCoreTests GrindCoreTests.swift
+[14/17] Emitting module GrindCorePackageTests
+[15/17] Compiling GrindCorePackageTests runner.swift
+[15/17] Write Objects.LinkFileList
+[16/17] Linking GrindCorePackageTests
+Build complete! (33.61s)
+Test Suite 'All tests' started at 2026-11-16 21:06:02.059.
+Test Suite 'GrindCorePackageTests.xctest' started at 2026-11-16 21:06:02.060.
+Test Suite 'DayClockTests' started at 2026-11-16 21:06:02.060.
+Test Case '-[GrindCoreTests.DayClockTests testKeyRoundTripAcrossDST]' started.
+Test Case '-[GrindCoreTests.DayClockTests testKeyRoundTripAcrossDST]' passed (0.005 seconds).
+Test Case '-[GrindCoreTests.DayClockTests testLateNightCountsForPreviousDay]' started.
+Test Case '-[GrindCoreTests.DayClockTests testLateNightCountsForPreviousDay]' passed (0.000 seconds).
+Test Case '-[GrindCoreTests.DayClockTests testMidnightStart]' started.
+Test Case '-[GrindCoreTests.DayClockTests testMidnightStart]' passed (0.000 seconds).
+Test Case '-[GrindCoreTests.DayClockTests testNextBoundary]' started.
+Test Case '-[GrindCoreTests.DayClockTests testNextBoundary]' passed (0.000 seconds).
+Test Suite 'DayClockTests' passed at 2026-11-16 21:06:02.067.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.006 (0.007) seconds
+Test Suite 'FormatTests' started at 2026-11-16 21:06:02.067.
+Test Case '-[GrindCoreTests.FormatTests testClock]' started.
+Test Case '-[GrindCoreTests.FormatTests testClock]' passed (0.000 seconds).
+Test Case '-[GrindCoreTests.FormatTests testHours]' started.
+Test Case '-[GrindCoreTests.FormatTests testHours]' passed (0.000 seconds).
+Test Case '-[GrindCoreTests.FormatTests testShort]' started.
+Test Case '-[GrindCoreTests.FormatTests testShort]' passed (0.000 seconds).
+Test Case '-[GrindCoreTests.FormatTests testSnapshotRoundTrip]' started.
+Test Case '-[GrindCoreTests.FormatTests testSnapshotRoundTrip]' passed (0.001 seconds).
+Test Suite 'FormatTests' passed at 2026-11-16 21:06:02.069.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.002 (0.002) seconds
+Test Suite 'FrameScheduleTests' started at 2026-11-16 21:06:02.069.
+Test Case '-[GrindCoreTests.FrameScheduleTests testCodableRoundTrip]' started.
+Test Case '-[GrindCoreTests.FrameScheduleTests testCodableRoundTrip]' passed (0.000 seconds).
+Test Case '-[GrindCoreTests.FrameScheduleTests testDecimationKeepsBoundedFramesAndDoublesInterval]' started.
+Test Case '-[GrindCoreTests.FrameScheduleTests testDecimationKeepsBoundedFramesAndDoublesInterval]' passed (0.002 seconds).
+Test Case '-[GrindCoreTests.FrameScheduleTests testFramesStayRoughlyEvenInTime]' started.
+Test Case '-[GrindCoreTests.FrameScheduleTests testFramesStayRoughlyEvenInTime]' passed (0.002 seconds).
+Test Case '-[GrindCoreTests.FrameScheduleTests testPlaybackFPS]' started.
+Test Case '-[GrindCoreTests.FrameScheduleTests testPlaybackFPS]' passed (0.000 seconds).
+Test Suite 'FrameScheduleTests' passed at 2026-11-16 21:06:02.074.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.004 (0.005) seconds
+Test Suite 'StreakTests' started at 2026-11-16 21:06:02.074.
+Test Case '-[GrindCoreTests.StreakTests testBelowGoalDoesNotCount]' started.
+Test Case '-[GrindCoreTests.StreakTests testBelowGoalDoesNotCount]' passed (0.000 seconds).
+Test Case '-[GrindCoreTests.StreakTests testHourHistogramSpreadsAcrossHours]' started.
+Test Case '-[GrindCoreTests.StreakTests testHourHistogramSpreadsAcrossHours]' passed (0.000 seconds).
+Test Case '-[GrindCoreTests.StreakTests testLateNightSessionKeepsYesterdayAlive]' started.
+Test Case '-[GrindCoreTests.StreakTests testLateNightSessionKeepsYesterdayAlive]' passed (0.000 seconds).
+Test Case '-[GrindCoreTests.StreakTests testLongestAcrossMonthBoundary]' started.
+Test Case '-[GrindCoreTests.StreakTests testLongestAcrossMonthBoundary]' passed (0.000 seconds).
+Test Case '-[GrindCoreTests.StreakTests testMissedDayBreaksStreak]' started.
+Test Case '-[GrindCoreTests.StreakTests testMissedDayBreaksStreak]' passed (0.000 seconds).
+Test Case '-[GrindCoreTests.StreakTests testOpenTodayDoesNotBreakStreak]' started.
+Test Case '-[GrindCoreTests.StreakTests testOpenTodayDoesNotBreakStreak]' passed (0.000 seconds).
+Test Case '-[GrindCoreTests.StreakTests testStreakIncludesTodayWhenDone]' started.
+Test Case '-[GrindCoreTests.StreakTests testStreakIncludesTodayWhenDone]' passed (0.000 seconds).
+Test Suite 'StreakTests' passed at 2026-11-16 21:06:02.077.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.002 (0.003) seconds
+Test Suite 'GrindCorePackageTests.xctest' passed at 2026-11-16 21:06:02.077.
+	 Executed 19 tests, with 0 failures (0 unexpected) in 0.014 (0.017) seconds
+Test Suite 'All tests' passed at 2026-11-16 21:06:02.077.
+	 Executed 19 tests, with 0 failures (0 unexpected) in 0.014 (0.018) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
