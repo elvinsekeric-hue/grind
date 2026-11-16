@@ -29,7 +29,9 @@ jobs:
 
       - name: Tests (Streak, Tage, Zeitraffer-Logik)
         working-directory: Packages/GrindCore
-        run: swift test
+        run: |
+          set -o pipefail
+          swift test 2>&1 | tee $GITHUB_WORKSPACE/test.log
 
       - name: Xcode-Projekt erzeugen
         run: |
@@ -56,6 +58,20 @@ jobs:
       - name: Fehlerausgabe
         if: failure()
         run: grep -E "error:" -A3 build.log | head -150 || true
+
+      - name: Log in Branch ci-logs ablegen
+        if: always()
+        run: |
+          mkdir -p /tmp/logs
+          cp build.log /tmp/logs/ 2>/dev/null || echo "kein build.log" > /tmp/logs/build.log
+          cp test.log /tmp/logs/ 2>/dev/null || true
+          grep -E "error:" -A3 build.log > /tmp/logs/errors.txt 2>/dev/null || true
+          cd /tmp/logs
+          git init -q -b ci-logs
+          git config user.name ci && git config user.email ci@example.com
+          echo "${{ github.sha }} ${{ job.status }}" > status.txt
+          git add -A && git commit -qm "logs ${{ github.run_number }}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-logs
 
       - name: IPA packen (ad-hoc mit App-Group-Entitlements für SideStore)
         run: |
