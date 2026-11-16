@@ -1,0 +1,85 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Neuestes Xcode wählen
+        run: |
+          XCODE=$(ls -d /Applications/Xcode_26*.app | sort -V | tail -1)
+          echo "Nutze $XCODE"
+          sudo xcode-select -s "$XCODE"
+          xcodebuild -version
+
+      - name: Tests (Streak, Tage, Zeitraffer-Logik)
+        working-directory: Packages/GrindCore
+        run: swift test
+
+      - name: Xcode-Projekt erzeugen
+        run: |
+          brew install xcodegen
+          xcodegen generate
+
+      - name: App bauen (unsigniert)
+        run: |
+          set +e
+          xcodebuild \
+            -project Grind.xcodeproj \
+            -scheme Grind \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            build > build.log 2>&1
+          status=$?
+          grep -E "error:|warning:|BUILD (SUCCEEDED|FAILED)" build.log | grep -v "appintentsmetadataprocessor" | sort -u | head -150
+          exit $status
+
+      - name: Fehlerausgabe
+        if: failure()
+        run: grep -E "error:" -A3 build.log | head -150 || true
+
+      - name: IPA packen (ad-hoc mit App-Group-Entitlements für SideStore)
+        run: |
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/Grind.app Payload/
+          ls Payload/Grind.app/PlugIns
+          codesign --force --sign - --entitlements Config/GrindWidget.entitlements Payload/Grind.app/PlugIns/GrindWidget.appex
+          codesign --force --sign - --entitlements Config/Grind.entitlements Payload/Grind.app
+          codesign -d --entitlements - Payload/Grind.app
+          zip -qry Grind.ipa Payload
+          ls -la Grind.ipa
+
+      - uses: actions/upload-artifact@v5
+        with:
+          name: Grind-ipa
+          path: Grind.ipa
+
+      - name: Release "latest" aktualisieren
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest Grind.ipa \
+            --title "Grind Build ${{ github.run_number }}" \
+            --notes "Automatisch gebaut aus ${{ github.sha }}. Auf dem iPhone in Safari laden und mit SideStore öffnen." \
+            --latest

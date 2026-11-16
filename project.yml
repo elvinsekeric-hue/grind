@@ -1,0 +1,84 @@
+name: Grind
+options:
+  bundleIdPrefix: de.elvin
+  deploymentTarget:
+    iOS: "26.0"
+  developmentLanguage: de
+packages:
+  GrindCore:
+    path: Packages/GrindCore
+settings:
+  base:
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    CODE_SIGN_STYLE: Automatic
+targets:
+  Grind:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+      - path: Shared
+    dependencies:
+      - package: GrindCore
+      - target: GrindWidget
+        embed: true
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Grind
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        CFBundleDevelopmentRegion: de
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+        UIApplicationSupportsIndirectInputEvents: true
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UIRequiresFullScreen: true
+        UIStatusBarStyle: UIStatusBarStyleLightContent
+        CFBundleURLTypes:
+          - CFBundleURLName: de.elvin.grind
+            CFBundleURLSchemes: [grind]
+        LSApplicationQueriesSchemes: [shortcuts]
+        NSCameraUsageDescription: Grind nimmt dich beim Lernen auf und macht daraus einen Zeitraffer.
+        NSPhotoLibraryAddUsageDescription: Grind speichert deine Zeitraffer auf Wunsch in der Fotos-App.
+        UIFileSharingEnabled: true
+        LSSupportsOpeningDocumentsInPlace: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.elvin.grind
+        PRODUCT_NAME: Grind
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        CODE_SIGN_ENTITLEMENTS: Config/Grind.entitlements
+        ENABLE_PREVIEWS: YES
+  GrindWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Widget
+      - path: Shared
+    dependencies:
+      - package: GrindCore
+    info:
+      path: Widget/Info.plist
+      properties:
+        CFBundleDisplayName: Grind
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.elvin.grind.widget
+        PRODUCT_NAME: GrindWidget
+        CODE_SIGN_ENTITLEMENTS: Config/GrindWidget.entitlements
+        SKIP_INSTALL: YES
+schemes:
+  Grind:
+    build:
+      targets:
+        Grind: all
+        GrindWidget: all
